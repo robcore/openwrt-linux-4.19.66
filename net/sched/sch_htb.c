@@ -159,7 +159,6 @@ struct htb_sched {
 	struct tcf_block	*block;
 
 #define HTB_WARN_TOOMANYEVENTS	0x1
-	unsigned int		warned;	/* only one warning */
 	int			direct_qlen;
 	struct work_struct	work;
 
@@ -742,12 +741,6 @@ static s64 htb_do_events(struct htb_sched *q, const int level,
 			htb_add_to_wait_tree(q, cl, diff);
 	}
 
-	/* too much load - let's continue after a break for scheduling */
-	if (!(q->warned & HTB_WARN_TOOMANYEVENTS)) {
-		pr_warn("htb: too many events!\n");
-		q->warned |= HTB_WARN_TOOMANYEVENTS;
-	}
-
 	return q->now;
 }
 
@@ -877,7 +870,6 @@ next:
 		if (likely(skb != NULL))
 			break;
 
-		qdisc_warn_nonwc("htb", cl->un.leaf.q);
 		htb_next_rb_node(level ? &cl->parent->un.inner.clprio[prio].ptr:
 					 &q->hlevel[0].hprio[prio].ptr);
 		cl = htb_lookup_leaf(hprio, prio);
@@ -1325,7 +1317,6 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
 	struct nlattr *tb[TCA_HTB_MAX + 1];
 	struct tc_htb_opt *hopt;
 	u64 rate64, ceil64;
-	int warn = 0;
 
 	/* extract all subattrs from opt attr */
 	if (!opt)
@@ -1487,11 +1478,9 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
 		cl->quantum = min_t(u64, quantum, INT_MAX);
 
 		if (!hopt->quantum && cl->quantum < 1000) {
-			warn = -1;
 			cl->quantum = 1000;
 		}
 		if (!hopt->quantum && cl->quantum > 200000) {
-			warn = 1;
 			cl->quantum = 200000;
 		}
 		if (hopt->quantum)
@@ -1504,10 +1493,6 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
 	cl->cbuffer = PSCHED_TICKS2NS(hopt->cbuffer);
 
 	sch_tree_unlock(sch);
-
-	if (warn)
-		pr_warn("HTB: quantum of class %X is %s. Consider r2q change.\n",
-			    cl->common.classid, (warn == -1 ? "small" : "big"));
 
 	qdisc_class_hash_grow(sch, &q->clhash);
 
