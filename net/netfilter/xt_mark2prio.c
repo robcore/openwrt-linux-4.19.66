@@ -31,7 +31,7 @@ mark2prio_tg(struct sk_buff *skb, const struct xt_action_param *par)
 	return NF_ACCEPT;
 }
 
-static struct xt_target mark2prio_target[] __read_mostly = {
+static struct xt_target mark2prio_tg_reg[] __read_mostly = {
 	{
 		.name		= "mark2prio",
 		.revision   = 0,
@@ -47,13 +47,13 @@ static struct xt_target mark2prio_target[] __read_mostly = {
 
 static int __init mark2prio_tg_init(void)
 {
-	return xt_register_targets(mark2prio_tg,
-				   ARRAY_SIZE(mark2prio_tg));
+	return xt_register_targets(mark2prio_tg_reg,
+				   ARRAY_SIZE(mark2prio_tg_reg));
 }
 
 static void __exit mark2prio_tg_exit(void)
 {
-	xt_unregister_targets(mark2prio_tg, ARRAY_SIZE(mark2prio_tg));
+	xt_unregister_targets(mark2prio_tg_reg, ARRAY_SIZE(mark2prio_tg_reg));
 }
 
 module_init(mark2prio_tg_init);
