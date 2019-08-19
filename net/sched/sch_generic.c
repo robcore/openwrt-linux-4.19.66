@@ -596,7 +596,7 @@ struct Qdisc_ops noqueue_qdisc_ops __read_mostly = {
 };
 
 static const u8 prio2band[TC_PRIO_MAX + 1] = {
-	1, 2, 2, 2, 1, 2, 0, 0 , 1, 1, 1, 1, 1, 1, 1, 1
+	2, 2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1
 };
 
 /* 3-band FIFO queue: old style, but should be a bit faster than
