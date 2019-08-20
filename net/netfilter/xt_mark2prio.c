@@ -25,12 +25,7 @@ MODULE_DESCRIPTION("Xtables: Straight up Prio Hack");
 static unsigned int
 mark2prio_tg(struct sk_buff *skb, const struct xt_action_param *par)
 {
-	/* only override priority if it hasn't been set yet.
-	 * this prevents mark2prio from stomping on the CLASSIFY target.
-	 */
-	if (skb->priority == 0) {
-		skb->priority = skb->mark;
-	}
+	skb->priority = skb->mark;
 
 	return NF_ACCEPT;
 }
