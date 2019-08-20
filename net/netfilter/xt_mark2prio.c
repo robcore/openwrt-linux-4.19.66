@@ -18,6 +18,10 @@
 #include <linux/netfilter_ipv6.h>
 #include <linux/netfilter/x_tables.h>
 
+MODULE_AUTHOR("Rob <github.com/robcore>");
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Xtables: Straight up Prio Hack");
+
 static unsigned int
 mark2prio_tg(struct sk_buff *skb, const struct xt_action_param *par)
 {
