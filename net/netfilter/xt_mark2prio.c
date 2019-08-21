@@ -36,7 +36,6 @@ static struct xt_target mark2prio_tg_reg[] __read_mostly = {
 		.revision   = 0,
 		.family		= NFPROTO_UNSPEC,
 		.target		= mark2prio_tg,
-		.targetsize	= 0,
 		.hooks		= (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
 					  (1 << NF_INET_FORWARD) | (1 << NF_INET_LOCAL_OUT) |
 					  (1 << NF_INET_POST_ROUTING),
