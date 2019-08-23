@@ -938,6 +938,15 @@ config NETFILTER_XT_TARGET_MARK2PRIO
 
 	  To compile it as a module, choose M here.  If unsure, say N.
 
+config NETFILTER_XT_TARGET_PRIO
+	tristate "PRIO target support"
+	default m if NETFILTER_ADVANCED=n
+	help
+	  Set skb priority directly and accept the packet all in a
+	  single, efficient entry.
+
+	  To compile it as a module, choose M here.  If unsure, say N.
+
 config NETFILTER_XT_NAT
 	tristate '"SNAT and DNAT" targets support'
 	depends on NF_NAT
