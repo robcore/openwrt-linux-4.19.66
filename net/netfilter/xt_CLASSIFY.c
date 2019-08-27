@@ -34,7 +34,7 @@ classify_tg(struct sk_buff *skb, const struct xt_action_param *par)
 	const struct xt_classify_target_info *clinfo = par->targinfo;
 
 	skb->priority = clinfo->priority;
-	return XT_CONTINUE;
+	return NF_ACCEPT;
 }
 
 static struct xt_target classify_tg_reg[] __read_mostly = {
