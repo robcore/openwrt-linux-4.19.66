@@ -282,7 +282,6 @@ static cpumask_var_t *wq_numa_possible_cpumask;
 					/* possible CPUs of each node */
 
 static bool wq_disable_numa;
-module_param_named(disable_numa, wq_disable_numa, bool, 0444);
 
 /* see the comment above the definition of WQ_POWER_EFFICIENT */
 static bool wq_power_efficient = false;
@@ -291,6 +290,7 @@ module_param_named(power_efficient, wq_power_efficient, bool, 0644);
 static bool wq_online;			/* can kworkers be created yet? */
 
 static bool wq_numa_enabled;		/* unbound NUMA affinity enabled */
+module_param_named(numa_enabled, wq_disable_numa, bool, 0444);
 
 /* buf for wq_update_unbound_numa_attrs(), protected by CPU hotplug exclusion */
 static struct workqueue_attrs *wq_update_unbound_numa_attrs_buf;
