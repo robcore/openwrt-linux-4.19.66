@@ -468,7 +468,7 @@ static int fq_codel_init(struct Qdisc *sch, struct nlattr *opt,
 
 	sch->limit = 10*1024;
 	q->flows_cnt = 1024;
-	q->memory_limit = 128 << 20; /* 128 GBytes */
+	q->memory_limit = 32 << 20; /* 32 MBytes */
 	q->drop_batch_size = 64;
 	q->quantum = psched_mtu(qdisc_dev(sch));
 	INIT_LIST_HEAD(&q->new_flows);
