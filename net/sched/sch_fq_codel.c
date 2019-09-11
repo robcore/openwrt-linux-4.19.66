@@ -426,7 +426,7 @@ static int fq_codel_change(struct Qdisc *sch, struct nlattr *opt,
 		q->cparams.ecn = !!nla_get_u32(tb[TCA_FQ_CODEL_ECN]);
 
 	if (tb[TCA_FQ_CODEL_QUANTUM])
-		q->quantum = max(256U, nla_get_u32(tb[TCA_FQ_CODEL_QUANTUM]));
+		q->quantum = max(64U, nla_get_u32(tb[TCA_FQ_CODEL_QUANTUM]));
 
 	if (tb[TCA_FQ_CODEL_DROP_BATCH_SIZE])
 		q->drop_batch_size = min(1U, nla_get_u32(tb[TCA_FQ_CODEL_DROP_BATCH_SIZE]));
@@ -468,14 +468,14 @@ static int fq_codel_init(struct Qdisc *sch, struct nlattr *opt,
 
 	sch->limit = 10*1024;
 	q->flows_cnt = 1024;
-	q->memory_limit = 32 << 20; /* 32 MBytes */
+	q->memory_limit = 1024 << 20; /* 1 GByte */
 	q->drop_batch_size = 64;
-	q->quantum = psched_mtu(qdisc_dev(sch));
+	q->quantum = 64;
 	INIT_LIST_HEAD(&q->new_flows);
 	INIT_LIST_HEAD(&q->old_flows);
 	codel_params_init(&q->cparams);
 	codel_stats_init(&q->cstats);
-	q->cparams.ecn = true;
+	q->cparams.ecn = false;
 	q->cparams.mtu = psched_mtu(qdisc_dev(sch));
 
 	if (opt) {
