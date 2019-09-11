@@ -49,28 +49,10 @@
  * Implemented on linux by Dave Taht and Eric Dumazet
  */
 
-#include <linux/types.h>
-#include <linux/ktime.h>
-#include <linux/skbuff.h>
-#include <net/pkt_sched.h>
-#include <net/inet_ecn.h>
-
-#ifndef CODEL_SHIFT
-#define CODEL_SHIFT 10
-#endif
-
-#ifndef MS2TIME
-#define MS2TIME(a) ((a * NSEC_PER_MSEC) >> CODEL_SHIFT)
-#endif
-
-#ifndef CODEL_DISABLED_THRESHOLD
-#define CODEL_DISABLED_THRESHOLD INT_MAX
-#endif
-
 static void codel_params_init(struct codel_params *params)
 {
-	params->interval = MS2TIME(25);
-	params->target = MS2TIME(1);
+	params->interval = MS2TIME(100);
+	params->target = MS2TIME(5);
 	params->ce_threshold = CODEL_DISABLED_THRESHOLD;
 	params->ecn = false;
 }
